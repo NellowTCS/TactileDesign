@@ -10,11 +10,13 @@ crate-type = ["cdylib"]
 wasm-bindgen = "0.2"
 js-sys = "0.3"
 console_error_panic_hook = "0.1"
-wee_alloc = { version = "0.4", optional = true }
 
-[features]
-default = []
-wee_alloc = ["dep:wee_alloc"]
+# LVGL dependencies
+lvgl = { git = "https://github.com/lvgl/lv_binding_rust", branch = "master", default-features = false, features = ["alloc"] }
+clang = "2.0.0"
+zstd-sys = "=2.0.0"
+ring = { version = "0.17", features = ["dev_urandom_fallback"] }
+
 
 [dependencies.web-sys]
 version = "0.3"
@@ -27,7 +29,27 @@ features = [
   "ImageData",
   "Window",
   "MouseEvent",
+  "KeyboardEvent",
+  "Event",
+  "EventTarget",
 ]
 
-# For now, we'll use a simpler approach without full LVGL
-# Once this works, we can add LVGL dependencies
+[build-dependencies]
+cc = "1.0"
+
+# LVGL configuration
+[package.metadata.lvgl]
+# Display settings
+LV_COLOR_DEPTH = "32"
+LV_HOR_RES_MAX = "800"
+LV_VER_RES_MAX = "600"
+LV_DPI_DEF = "100"
+
+# Memory settings
+LV_MEM_SIZE = "65536"
+LV_MEM_CUSTOM = "0"
+
+# Feature flags
+LV_USE_FILESYSTEM = "0"
+LV_USE_USER_DATA = "1"
+LV_USE_LOG = "0"

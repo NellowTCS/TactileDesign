@@ -40,7 +40,6 @@ use std::os::raw::{
 
 type time_t = c_long;
 
-use libc::*;
 
 pub type CXClientData = *mut c_void;
 pub type CXCursorVisitor = extern "C" fn(CXCursor, CXCursor, CXClientData) -> CXChildVisitResult;

@@ -45,19 +45,23 @@ if("${CMAKE_SYSTEM_NAME}" STREQUAL "Emscripten")
     set(CMAKE_EXECUTABLE_SUFFIX ".html")
 
     target_compile_options(my_lvgl_wasm PRIVATE "-s" "USE_SDL=2")
-
-    target_link_libraries(my_lvgl_wasm PRIVATE
-        SDL2
-        "-s USE_SDL=2"
-        "-s USE_SDL_TTF=0"
-        "-s USE_SDL_IMAGE=0"
-        "-s ALLOW_MEMORY_GROWTH=1"
-        "-s ASSERTIONS=1"
-        "-s DISABLE_EXCEPTION_CATCHING=0"
-        "-s ENVIRONMENT=web"
+    
+    # For linker flags, use target_link_options if available (CMake 3.13+)
+    target_link_options(my_lvgl_wasm PRIVATE
+        "-sUSE_SDL=2"
+        "-sUSE_SDL_TTF=0"
+        "-sUSE_SDL_IMAGE=0"
+        "-sALLOW_MEMORY_GROWTH=1"
+        "-sASSERTIONS=1"
+        "-sDISABLE_EXCEPTION_CATCHING=0"
+        "-sENVIRONMENT=web"
     )
+
+    # Remove SDL2 and SDL2main from target_link_libraries (not needed)
+    # If needed, link with emscripten SDL2 by flags, not explicit libs
 
     set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -g")
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g")
 endif()
+
 

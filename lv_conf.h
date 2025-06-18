@@ -5,9 +5,10 @@
 
 /* WASM specific settings */
 #ifdef __EMSCRIPTEN__
-#define LV_TICK_CUSTOM 1
+#define LV_TICK_CUSTOM 0   /* disable custom tick */
 #define LV_NO_TASK_HANDLER 0
 #endif
+
 
 /* Display */
 #define LV_HOR_RES_MAX          800

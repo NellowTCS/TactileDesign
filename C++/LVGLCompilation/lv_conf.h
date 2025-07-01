@@ -11,9 +11,9 @@
 
 
 /* Display */
-#define LV_HOR_RES_MAX          800
-#define LV_VER_RES_MAX          600
-#define LV_COLOR_DEPTH          32
+#define LV_HOR_RES_MAX          480
+#define LV_VER_RES_MAX          320
+#define LV_COLOR_DEPTH          16
 #define LV_DPI_DEF              100
 
 /* Memory management */
@@ -48,17 +48,17 @@
 #define LV_USE_LINE             1
 #define LV_USE_LIST             1
 #define LV_USE_METER            1
-#define LV_USE_MSGBOX           1
-#define LV_USE_ROLLER           1
+#define LV_USE_MSGBOX           0
+#define LV_USE_ROLLER           0
 #define LV_USE_SLIDER           1
 #define LV_USE_SWITCH           1
 #define LV_USE_TEXTAREA         1
-#define LV_USE_TABLE            1
+#define LV_USE_TABLE            0
 #define LV_USE_TABVIEW          1
 
 /* Themes */
 #define LV_USE_THEME_DEFAULT    1
-#define LV_USE_THEME_BASIC      1
+#define LV_USE_THEME_BASIC      0
 
 /* Layouts */
 #define LV_USE_FLEX             1

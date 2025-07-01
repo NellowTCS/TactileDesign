@@ -42,26 +42,22 @@ target_include_directories(my_lvgl_wasm PRIVATE
 
 # Emscripten specific flags
 if("${CMAKE_SYSTEM_NAME}" STREQUAL "Emscripten")
-    set(CMAKE_EXECUTABLE_SUFFIX ".html")
+    set(CMAKE_EXECUTABLE_SUFFIX ".js")
 
-    target_compile_options(my_lvgl_wasm PRIVATE "-s" "USE_SDL=2")
-    
-    # For linker flags, use target_link_options if available (CMake 3.13+)
+    target_compile_options(my_lvgl_wasm PRIVATE "-sUSE_SDL=2")
+
     target_link_options(my_lvgl_wasm PRIVATE
         "-sUSE_SDL=2"
-        "-sUSE_SDL_TTF=0"
-        "-sUSE_SDL_IMAGE=0"
         "-sALLOW_MEMORY_GROWTH=1"
         "-sASSERTIONS=1"
         "-sDISABLE_EXCEPTION_CATCHING=0"
         "-sENVIRONMENT=web"
+        "-sMODULARIZE=1"
+        "-sEXPORT_NAME='TactileDesigner'"
+        "-sEXPORTED_FUNCTIONS=['_start_lvgl']"
+        "-sEXPORTED_RUNTIME_METHODS=['ccall','cwrap']"
     )
 
-    # Remove SDL2 and SDL2main from target_link_libraries (not needed)
-    # If needed, link with emscripten SDL2 by flags, not explicit libs
-
-    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -g")
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g")
+    set(CMAKE_C_FLAGS_DEBUG "-g -O0")
+    set(CMAKE_CXX_FLAGS_DEBUG "-g -O0")
 endif()
-
-

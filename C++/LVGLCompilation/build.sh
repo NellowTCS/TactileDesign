@@ -15,9 +15,8 @@ cd ../
 emcmake cmake -B build
 emmake make -C build
 
-cd LVGLCompilation
-cp LVGLCompilation/build/my_lvgl_wasm.wasm BuiltFiles
-cp LVGLCompilation/build/my_lvgl_wasm.js BuiltFiles
-cp LVGLCompilation/build/my_lvgl_wasm.html BuiltFiles
+cp build/my_lvgl_wasm.wasm ../BuiltFiles/
+cp build/my_lvgl_wasm.js ../BuiltFiles/
+cp build/my_lvgl_wasm.html ../BuiltFiles/
 
 rm -rf 'LVGLCompilation/build/my_lvgl_wasm.html' 'LVGLCompilation/build/my_lvgl_wasm.js' 'LVGLCompilation/build/my_lvgl_wasm.wasm' 

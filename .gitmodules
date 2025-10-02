@@ -1,0 +1,3 @@
+[submodule "lv_web_emscripten/lvgl"]
+	path = lv_web_emscripten/lvgl
+	url = https://github.com/littlevgl/lvgl.git

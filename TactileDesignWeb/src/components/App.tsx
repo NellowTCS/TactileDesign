@@ -665,9 +665,9 @@ export default function App() {
       >
         <iframe
           ref={iframeRef}
-          src="/lvgl/index.html?w=320&h=240"
-          width={320}
-          height={240}
+          src="/lvgl/index.html?w=800&h=600"
+          width={800}
+          height={600}
           style={{
             border: "2px solid #444",
             pointerEvents: draggingType ? "none" : "auto",

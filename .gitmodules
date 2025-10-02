@@ -1,0 +1,3 @@
+[submodule "TactileDesignWeb/lv_web_emscripten"]
+	path = TactileDesignWeb/lv_web_emscripten
+	url = https://github.com/lvgl/lv_web_emscripten

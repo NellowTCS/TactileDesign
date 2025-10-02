@@ -203,7 +203,7 @@ export default function App() {
         }}
       >
         <iframe
-          src="../lvgl/index.html?w=320&h=240"
+          src="./lvgl/index.html?w=320&h=240"
           width={320}
           height={240}
           style={{

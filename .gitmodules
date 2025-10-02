@@ -1,3 +1,0 @@
-[submodule "lv_web_emscripten"]
-	path = lv_web_emscripten
-	url = https://github.com/lvgl/lv_web_emscripten

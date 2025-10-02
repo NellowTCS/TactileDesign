@@ -12,7 +12,7 @@ set(SOURCES ${MY_SOURCES})
 add_executable(index ${SOURCES} ${INCLUDES})
 
 if(NOT LVGL_CHOSEN_DEMO)
-    set(LVGL_CHOSEN_DEMO lv_demo_widgets)
+    set(LVGL_CHOSEN_DEMO lv_example_noop)
 endif()
 set_source_files_properties(main.c PROPERTIES COMPILE_FLAGS -DCHOSEN_DEMO=${LVGL_CHOSEN_DEMO})
 
@@ -24,4 +24,5 @@ target_link_libraries(index
     lvgl_thorvg
     SDL2
 )
-set_target_properties(index PROPERTIES LINK_FLAGS "--shell-file ${PROJECT_SOURCE_DIR}/lvgl_shell.html -s SINGLE_FILE=1 -s INITIAL_MEMORY=33554432")
+# Export all functions marked with EMSCRIPTEN_KEEPALIVE in C code
+set_target_properties(index PROPERTIES LINK_FLAGS "--shell-file ${PROJECT_SOURCE_DIR}/lvgl_shell.html -s SINGLE_FILE=0 -s INITIAL_MEMORY=33554432 -s EXPORT_ALL=0 -s EXPORTED_FUNCTIONS='[\"_main\",\"_free\",\"_lvgl_clear_screen\",\"_lvgl_create_label\",\"_lvgl_create_button\",\"_lvgl_create_container\",\"_lvgl_create_slider\",\"_lvgl_create_checkbox\",\"_lvgl_create_switch\",\"_lvgl_create_textarea\",\"_lvgl_create_dropdown\",\"_lvgl_create_arc\",\"_lvgl_create_spinner\",\"_lvgl_create_bar\",\"_lvgl_create_roller\"]' -s EXPORTED_RUNTIME_METHODS='[\"allocateUTF8\",\"UTF8ToString\",\"ccall\",\"cwrap\"]' -s ALLOW_TABLE_GROWTH=1")

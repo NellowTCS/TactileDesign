@@ -129,3 +129,107 @@ static void hal_init(void)
     lv_indev_t * keyboard = lv_sdl_keyboard_create();
     lv_indev_set_group(keyboard, lv_group_get_default());    
 }
+
+EMSCRIPTEN_KEEPALIVE void lvgl_clear_screen() {
+    lv_obj_clean(lv_screen_active());
+}
+
+EMSCRIPTEN_KEEPALIVE lv_obj_t* lvgl_create_label(int x, int y, const char* text) {
+    lv_obj_t* label = lv_label_create(lv_screen_active());
+    lv_label_set_text(label, text);
+    lv_obj_set_pos(label, x, y);
+    return label;
+}
+
+EMSCRIPTEN_KEEPALIVE lv_obj_t* lvgl_create_button(int x, int y, int w, int h, const char* text) {
+    lv_obj_t* btn = lv_btn_create(lv_screen_active());
+    lv_obj_t* label = lv_label_create(btn);
+    lv_label_set_text(label, text);
+    lv_obj_center(label);
+    lv_obj_set_pos(btn, x, y);
+    lv_obj_set_size(btn, w, h);
+    return btn;
+}
+
+EMSCRIPTEN_KEEPALIVE lv_obj_t* lvgl_create_container(int x, int y, int w, int h) {
+    lv_obj_t* cont = lv_obj_create(lv_screen_active());
+    lv_obj_set_pos(cont, x, y);
+    lv_obj_set_size(cont, w, h);
+    return cont;
+}
+
+EMSCRIPTEN_KEEPALIVE lv_obj_t* lvgl_create_slider(int x, int y, int w, int h, int min, int max, int value) {
+    lv_obj_t* slider = lv_slider_create(lv_screen_active());
+    lv_obj_set_pos(slider, x, y);
+    lv_obj_set_size(slider, w, h);
+    lv_slider_set_range(slider, min, max);
+    lv_slider_set_value(slider, value, LV_ANIM_OFF);
+    return slider;
+}
+
+EMSCRIPTEN_KEEPALIVE lv_obj_t* lvgl_create_checkbox(int x, int y, const char* text, int checked) {
+    lv_obj_t* cb = lv_checkbox_create(lv_screen_active());
+    lv_checkbox_set_text(cb, text);
+    lv_obj_set_pos(cb, x, y);
+    if (checked) {
+        lv_obj_add_state(cb, LV_STATE_CHECKED);
+    }
+    return cb;
+}
+
+EMSCRIPTEN_KEEPALIVE lv_obj_t* lvgl_create_switch(int x, int y, int checked) {
+    lv_obj_t* sw = lv_switch_create(lv_screen_active());
+    lv_obj_set_pos(sw, x, y);
+    if (checked) {
+        lv_obj_add_state(sw, LV_STATE_CHECKED);
+    }
+    return sw;
+}
+
+EMSCRIPTEN_KEEPALIVE lv_obj_t* lvgl_create_textarea(int x, int y, int w, int h, const char* placeholder) {
+    lv_obj_t* ta = lv_textarea_create(lv_screen_active());
+    lv_obj_set_pos(ta, x, y);
+    lv_obj_set_size(ta, w, h);
+    lv_textarea_set_placeholder_text(ta, placeholder);
+    return ta;
+}
+
+EMSCRIPTEN_KEEPALIVE lv_obj_t* lvgl_create_dropdown(int x, int y, int w, const char* options) {
+    lv_obj_t* dd = lv_dropdown_create(lv_screen_active());
+    lv_obj_set_pos(dd, x, y);
+    lv_obj_set_width(dd, w);
+    lv_dropdown_set_options(dd, options);
+    return dd;
+}
+
+EMSCRIPTEN_KEEPALIVE lv_obj_t* lvgl_create_arc(int x, int y, int size, int value) {
+    lv_obj_t* arc = lv_arc_create(lv_screen_active());
+    lv_obj_set_pos(arc, x, y);
+    lv_obj_set_size(arc, size, size);
+    lv_arc_set_value(arc, value);
+    return arc;
+}
+
+EMSCRIPTEN_KEEPALIVE lv_obj_t* lvgl_create_spinner(int x, int y, int size, int speed) {
+    lv_obj_t* spinner = lv_spinner_create(lv_screen_active());
+    lv_obj_set_pos(spinner, x, y);
+    lv_obj_set_size(spinner, size, size);
+    lv_spinner_set_anim_params(spinner, speed, 90);
+    return spinner;
+}
+
+EMSCRIPTEN_KEEPALIVE lv_obj_t* lvgl_create_bar(int x, int y, int w, int h, int value) {
+    lv_obj_t* bar = lv_bar_create(lv_screen_active());
+    lv_obj_set_pos(bar, x, y);
+    lv_obj_set_size(bar, w, h);
+    lv_bar_set_value(bar, value, LV_ANIM_OFF);
+    return bar;
+}
+
+EMSCRIPTEN_KEEPALIVE lv_obj_t* lvgl_create_roller(int x, int y, int h, const char* options) {
+    lv_obj_t* roller = lv_roller_create(lv_screen_active());
+    lv_obj_set_pos(roller, x, y);
+    lv_obj_set_height(roller, h);
+    lv_roller_set_options(roller, options, LV_ROLLER_MODE_NORMAL);
+    return roller;
+}

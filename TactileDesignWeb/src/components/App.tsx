@@ -375,6 +375,8 @@ export default function App() {
     <div style={{ display: "flex", height: "100vh", fontFamily: "sans-serif", background: "#f5f5f5" }}>
       {/* Left Sidebar */}
       <div style={{ width: 220, padding: 16, borderRight: "1px solid #ddd", background: "#fff", overflowY: "auto" }}>
+        <h1>TactileDesign</h1>
+        <hr></hr>
         <h2 style={{ margin: "0 0 16px 0", fontSize: 18, fontWeight: 600 }}>Widgets</h2>
         
         {/* Basic */}

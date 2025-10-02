@@ -1,12 +1,12 @@
 # Emscripten port
 
-**LVGL ported to Emscripten to be converted to JavaScript**
+## LVGL ported to Emscripten to be converted to JavaScript
 
 The result looks like this: [https://lvgl.io/demos](https://lvgl.io/demos)
 
-# How to get started
+## How to get started
 
-## Install SDL
+### Install SDL
 
 Download [SDL](https://www.libsdl.org/) (a graphics library to open a window and handle the mouse). On Linux:
 
@@ -17,7 +17,7 @@ Download [SDL](https://www.libsdl.org/) (a graphics library to open a window and
 
 ---
 
-## Install Emscripten SDK
+### Install Emscripten SDK
 
 Download the [Emscripten SDK](https://kripken.github.io/emscripten-site/) and make sure it is in your `PATH`.
 
@@ -32,7 +32,7 @@ More info here: [Emscripten Downloads](https://kripken.github.io/emscripten-site
 
 ---
 
-## Get the Emscripten-LVGL project
+### Get the Emscripten-LVGL project
 
 1. Be sure you ran `. <path-to-emsdk>/emsdk_env.sh` to add EMSDK to `PATH`
 1. In any directory: `git clone --recursive https://github.com/lvgl/lv_web_emscripten.git`
@@ -45,17 +45,20 @@ More info here: [Emscripten Downloads](https://kripken.github.io/emscripten-site
 
 ---
 
-### Build options (environment variables)
+#### Build options (environment variables)
 
 * `LVGL_CHOSEN_DEMO` can be set to the desired demo name so that you don't need to change any C files. This is useful to compile many demos in bulk using a script.
 
-Example: 
+Example:
+
 ```bash
 emcmake cmake .. -DLVGL_CHOSEN_DEMO=lv_demo_widgets
 ```
 
-### Known issue with Google Chrome browser
+#### Known issue with Google Chrome browser
+
 Chrome might not be able to open the generated HTML file offline. It works if you copy the files to a server. Use Firefox or other browser for offline testing if needed.
 
-### Known issue with Firefox
+#### Known issue with Firefox
+
 Firefox might not be able to open the generated HTML file offline unless you go to `about:config` and change `privacy.file_unique_origin` to `false`.

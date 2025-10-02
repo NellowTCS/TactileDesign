@@ -30,7 +30,7 @@ type Widget = LabelWidget | ButtonWidget | ContainerWidget;
 
 declare global {
   interface Window {
-    Module?: any;
+    Module?: unknown;
   }
 }
 
@@ -209,7 +209,7 @@ export default function App() {
           height={240}
           style={{
             border: "2px solid #444",
-            pointerEvents: "none", // Prevent iframe stealing clicks
+            pointerEvents: draggingType ? "none" : "auto",
           }}
         />
       </div>

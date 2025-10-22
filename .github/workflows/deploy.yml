@@ -1,0 +1,46 @@
+# Simple workflow for deploying static content to GitHub Pages
+name: Deploy browser build to GitHub Pages
+
+on:
+  push:
+    branches: ["main"]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # Build the WASM project using build.sh
+      - name: Compile lv_web_emscripten
+        run: bash ./build.sh
+
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+          cache-dependency-path: TactileDesignWeb/package-lock.json
+
+      - name: Install dependencies
+        working-directory: TactileDesignWeb
+        run: npm ci
+
+      - name: Build
+        working-directory: TactileDesignWeb
+        run: npm run build
+
+      - name: Deploy browser build to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./TactileDesignWeb/dist

@@ -1,5 +1,10 @@
 #!/usr/bin/env bash
 set -e
+
+# Get the directory of this script
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+REPO_ROOT="$SCRIPT_DIR"
+
 # Install dependencies (Linux only, skip on macOS/Windows)
 if [[ "$OSTYPE" == "linux-gnu"* ]]; then
    if command -v apt-get >/dev/null 2>&1; then
@@ -32,7 +37,13 @@ git pull
 source ./emsdk_env.sh
 
 # Build project
-cd /workspaces/TactileDesign/lv_web_emscripten
+LV_WEB_DIR="$REPO_ROOT/lv_web_emscripten"
+if [ ! -d "$LV_WEB_DIR" ]; then
+   echo "Error: Directory lv_web_emscripten not found at $LV_WEB_DIR"
+   exit 1
+fi
+
+cd "$LV_WEB_DIR"
 git submodule update --init
 mkdir -p cmbuild
 cd cmbuild
@@ -40,7 +51,7 @@ emcmake cmake ..
 emmake make -j$(nproc || sysctl -n hw.ncpu || echo 4)
 
 # Copy build outputs
-DEST="../../TactileDesignWeb/public/lvgl"
+DEST="$REPO_ROOT/TactileDesignWeb/public/lvgl"
 mkdir -p "$DEST"
 cp -a index.html "$DEST/index.html"
 cp -a index.js "$DEST/index.js"

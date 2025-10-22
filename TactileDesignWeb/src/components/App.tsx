@@ -1084,7 +1084,7 @@ export default function App() {
           >
             <iframe
               ref={iframeRef}
-              src="/lvgl/index.html?w=800&h=600"
+              src="/TactileDesign/lvgl/index.html?w=800&h=600"
               width={800}
               height={600}
               style={{

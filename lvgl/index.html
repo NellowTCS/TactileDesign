@@ -1,0 +1,166 @@
+<html>
+
+<head>
+	<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no' />
+	<style type="text/css">
+		html,
+		body {
+			margin: 0;
+
+			width: 100%;
+			height: 100%;
+			min-width: 100%;
+			min-height: 100%;
+		}
+
+		body {
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			justify-content: center;
+		}
+
+		.git-commit-info {
+			font-family: Consolas, 'Courier New', Courier, monospace;
+			background-color: #f1f1f1;
+			padding: 2px;
+			text-align: left;
+		}
+
+		#git-hash {
+			text-align: center;
+		}
+
+		#output {
+			margin: 0;
+			padding: 0;
+		}
+	</style>
+</head>
+
+<body>
+	<div id="git-hash"></div>
+	<p id="output">
+		<canvas id="canvas"></canvas>
+	</p>
+	<script src="gitrev.js"></script>
+	<script>
+		var siteURL = new URL(window.location.href);
+		var w = siteURL.searchParams.get("w") || "800";
+		var h = siteURL.searchParams.get("h") || "480";
+		var canvas = document.getElementById('canvas');
+		canvas.setAttribute("width", w);
+		canvas.setAttribute("height", h);
+		console.log("Requested " + w + "x" + h + " px");
+		var Module = {
+			print: function (text) {
+				console.log(text);
+			},
+			printErr: function (text) {
+				console.error(text);
+			},
+			canvas: (function () {
+				return canvas;
+			})(),
+			arguments: [siteURL.searchParams.get("w") || "800", siteURL.searchParams.get("h") || "480", siteURL.searchParams.get("example") ?? "default"],
+			onRuntimeInitialized: function () {
+				console.log("[LVGL] Runtime Initialized!");
+
+				window.LVGL = {
+					clear: () => {
+						console.log("[LVGL] clear()");
+						Module._lvgl_clear_screen();
+					},
+					label: (x, y, text) => {
+						console.log("[LVGL] label():", x, y, text);
+						const ptr = Module.allocateUTF8(text);
+						Module._lvgl_create_label(x, y, ptr);
+						Module._free(ptr);
+					},
+					button: (x, y, w, h, text) => {
+						console.log("[LVGL] button():", x, y, w, h, text);
+						const ptr = Module.allocateUTF8(text);
+						Module._lvgl_create_button(x, y, w, h, ptr);
+						Module._free(ptr);
+					},
+					container: (x, y, w, h) => {
+						console.log("[LVGL] container():", x, y, w, h);
+						Module._lvgl_create_container(x, y, w, h);
+					},
+					slider: (x, y, w, h, min, max, value) => {
+						console.log("[LVGL] slider():", x, y, w, h, min, max, value);
+						Module._lvgl_create_slider(x, y, w, h, min, max, value);
+					},
+					checkbox: (x, y, text, checked) => {
+						console.log("[LVGL] checkbox():", x, y, text, checked);
+						const ptr = Module.allocateUTF8(text);
+						Module._lvgl_create_checkbox(x, y, ptr, checked);
+						Module._free(ptr);
+					},
+					switch: (x, y, checked) => {
+						console.log("[LVGL] switch():", x, y, checked);
+						Module._lvgl_create_switch(x, y, checked);
+					},
+					textarea: (x, y, w, h, placeholder) => {
+						console.log("[LVGL] textarea():", x, y, w, h, placeholder);
+						const ptr = Module.allocateUTF8(placeholder);
+						Module._lvgl_create_textarea(x, y, w, h, ptr);
+						Module._free(ptr);
+					},
+					dropdown: (x, y, w, options) => {
+						console.log("[LVGL] dropdown():", x, y, w, options);
+						const ptr = Module.allocateUTF8(options);
+						Module._lvgl_create_dropdown(x, y, w, ptr);
+						Module._free(ptr);
+					},
+					arc: (x, y, size, value) => {
+						console.log("[LVGL] arc():", x, y, size, value);
+						Module._lvgl_create_arc(x, y, size, value);
+					},
+					spinner: (x, y, size, speed) => {
+						console.log("[LVGL] spinner():", x, y, size, speed);
+						Module._lvgl_create_spinner(x, y, size, speed);
+					},
+					bar: (x, y, w, h, value) => {
+						console.log("[LVGL] bar():", x, y, w, h, value);
+						Module._lvgl_create_bar(x, y, w, h, value);
+					},
+					roller: (x, y, h, options) => {
+						console.log("[LVGL] roller():", x, y, h, options);
+						const ptr = Module.allocateUTF8(options);
+						Module._lvgl_create_roller(x, y, h, ptr);
+						Module._free(ptr);
+					},
+				};
+
+				console.log("[LVGL] Interface ready with 12 widget types");
+				if (window.parent !== window) {
+					window.parent.postMessage({ type: 'lvglReady' }, '*');
+				}
+			}
+		};
+		if (typeof window.git_hash != 'undefined') {
+			var gitHashDiv = document.querySelector("#git-hash");
+			var gitLink = document.createElement("div");
+			var gitHashComponents = window.git_hash.split(" ").filter(component => component.trim().length > 0);
+			for (var i = 0; i < gitHashComponents.length; i++) {
+				console.log(gitHashComponents[i], gitHashComponents[i].length);
+				/* This is an extremely lazy way of checking for a Git hash, but it works */
+				if (gitHashComponents[i].length == 40) {
+					gitHashComponents[i] = `<a href="https://github.com/lvgl/${gitHashComponents[i + 1]}/commit/${gitHashComponents[i]}">${gitHashComponents[i]}</a>`;
+				} else {
+					/* Repository name */
+					gitHashComponents[i] += "<br/>";
+				}
+			}
+			gitLink.classList.add("git-commit-info");
+			gitLink.innerHTML = gitHashComponents.join(" ");
+			gitHashDiv.textContent = "LVGL compiled to Emscripten. Git commit information:";
+			gitHashDiv.appendChild(gitLink);
+		}
+		window.addEventListener("click", () => window.focus());
+	</script>
+	<script async type="text/javascript" src="index.js"></script>
+</body>
+
+</html>
